@@ -12,7 +12,7 @@ Developed as a cornerstone portfolio piece for Master of Arts in Economics studi
 ├── Labour Market Statistics.py           # Consolidated Master Python Econometric Script
 ├── .gitignore                            # Excludes raw large dataset (>100MB)
 ├── README.md                             # Project documentation and economic brief
-└──nz_regional_labour_macro_analysis.png  # Publication-Grade Visualizations
+└── nz_regional_labour_macro_analysis.png  # Publication-Grade Visualizations
 ```
 
 *(Note: Raw data files are excluded from version control via `.gitignore` to comply with GitHub file size limits. See the setup instructions below to source the data locally).*
