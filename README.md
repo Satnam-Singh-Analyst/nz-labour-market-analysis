@@ -63,7 +63,8 @@ Due to GitHub's 100MB file size limit, the raw multi-gigabyte Stats NZ dataset i
 ### **1. Download the Raw Dataset**
 * **Source:** Statistics New Zealand (Stats NZ)
 * **Direct Download Link:** [Stats NZ HLFS Quarterly Datasets](https://www.stats.govt.nz/large-datasets/csv-files-for-download/)
-* **Required File:** `hlfs-jun26qtr-csv.csv`
+* **ZIP Archive to Download:** `Labour market statistics: June 2026 quarter – CSV` (ZIP compressed file, ~18 MB)
+* **Extraction:** Unzip the downloaded folder and select the target dataset file: **`hlfs-jun26qtr-csv.csv`**.
 
 ### **2. Execution Steps**
 1. Clone this repository and navigate into the folder:
