@@ -1,0 +1,134 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+print("--- 1. LOADING DATA & INSPECTING COLUMNS ---")
+df = pd.read_csv('hlfs-jun26qtr-csv.csv', low_memory=False)
+print("Initial shape:", df.shape)
+
+print("\n--- FIRST 3 ROWS ---")
+print(df.head(3))
+
+print("\n--- FULL COLUMN INFO ---")
+print(df.info())
+
+
+print("\n--- 2. CHECKING MISSING VALUES IN KEY COLUMNS ---")
+print(df[['Data_value', 'UNITS', 'Subject']].isna().sum())
+
+
+print("\n--- 3. REMOVING DUPLICATES ---")
+initial_count = len(df)
+df = df.drop_duplicates()
+print(f"Removed {initial_count - len(df)} duplicate rows. Current shape: {df.shape}")
+
+
+print("\n--- 4. CLEANING STRING COLUMNS ---")
+for col in ['STATUS', 'UNITS', 'Subject', 'Group']:
+    if col in df.columns:
+        df[col] = df[col].astype(str).str.strip()
+
+
+print("\n--- 5. HANDLING MISSING DATA_VALUE ENTRIES ---")
+null_count = df['Data_value'].isna().sum()
+print(f"Missing Data_values found: {null_count}")
+df['Data_value'] = df['Data_value'].fillna(0)
+print("\nCleaning complete! Cleaned dataset ready for exploratory analysis.")
+
+
+print("\n--- 6. EXPLORATORY GROUPBY SUMMARIES ---")
+print("\nUnique Subjects in the Dataset:")
+print(df['Subject'].value_counts())
+
+print("\nAverage Data Values by Subject and Units:")
+summary_df = df.groupby(['Subject', 'UNITS'])['Data_value'].mean().reset_index()
+print(summary_df.head(10))
+
+
+print("\n--- 7. EXPLORING ECONOMIC GROUPS ---")
+print("\nTop 15 Groups in the Dataset:")
+print(df['Group'].value_counts().head(15))
+
+time_summary = df.groupby('Period')['Data_value'].mean().reset_index()
+print("\nAverage Data Values over Time Periods (First 5):")
+print(time_summary.head(5))
+
+
+print("\n--- 8. FILTERING SPECIFIC INSIGHTS ---")
+regional_df = df[df['Group'] == 'Labour Force Status by Sex by Regional Council']
+print(f"Total rows for Regional Labour Force Status: {len(regional_df)}")
+
+print("\nSample filtered data values:")
+print(regional_df[['Period', 'Data_value', 'UNITS']].head(5))
+
+
+print("\n--- 9. REGIONAL BREAKDOWN & TREND ANALYSIS ---")
+if 'Regional Council' in regional_df.columns:
+    print("\nUnique Regional Councils:")
+    print(regional_df['Regional Council'].value_counts().head(10))
+
+for col in ['Sex', 'Employment Status', 'Series_title_1']:
+    if col in regional_df.columns:
+        print(f"\nUnique values in {col}:")
+        print(regional_df[col].unique())
+
+recent_regional = regional_df.groupby('Period')['Data_value'].mean().reset_index().tail(10)
+print("\nAverage Regional Data Values (Last 10 Quarters):")
+print(recent_regional)
+
+
+print("\n--- 10. ADVANCED MASTER'S LEVEL ECONOMETRIC CALCULATIONS ---")
+# Calculating statistical distribution (mean, median, std dev, IQR) across regional data values
+print("\nStatistical Summary of Regional Data Values:")
+print(regional_df['Data_value'].describe())
+
+# Calculating Quarter-on-Quarter (QoQ) Growth Rates for comparative analysis
+# First, pivot or group regional trends by Period and Regional Council
+trend_df = regional_df.groupby(['Period', 'Regional Council'])['Data_value'].mean().reset_index()
+
+# Sort chronologically to ensure accurate percent change calculations
+trend_df = trend_df.sort_values(by=['Regional Council', 'Period'])
+
+# Calculate percentage change over time per region using pandas .pct_change()
+trend_df['QoQ_Growth_Rate'] = trend_df.groupby('Regional Council')['Data_value'].pct_change() * 100
+print("\nSample Growth Rate Calculations (QoQ % Change):")
+print(trend_df.dropna().head(10))
+
+
+print("\n--- 11. BUILDING MASTER'S PORTFOLIO MULTI-PANEL VISUALISATIONS ---")
+# Filter for key economic hubs
+selected_regions = ['Auckland', 'Wellington', 'Canterbury']
+chart_df = trend_df[trend_df['Regional Council'].isin(selected_regions)]
+
+# Set up a multi-panel figure (2 subplots: Absolute levels vs Growth rates)
+fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(12, 10), sharex=True)
+
+# Plot 1: Absolute Labour Market Trends
+sns.lineplot(
+    data=chart_df, x='Period', y='Data_value', hue='Regional Council', 
+    ax=axes[0], linewidth=2.5
+)
+axes[0].set_title('Regional Labour Market Levels: Auckland vs Wellington vs Canterbury', fontsize=13, fontweight='bold')
+axes[0].set_ylabel('Data Value (Thousands / Rate)', fontsize=11)
+axes[0].grid(True, linestyle='--', alpha=0.6)
+axes[0].legend(title='Regional Council')
+
+# Plot 2: Quarter-on-Quarter Growth Rates (%)
+sns.lineplot(
+    data=chart_df, x='Period', y='QoQ_Growth_Rate', hue='Regional Council', 
+    ax=axes[1], linewidth=2.0
+)
+axes[1].set_title('Quarter-on-Quarter (QoQ) Labour Market Growth Rates (%)', fontsize=13, fontweight='bold')
+axes[1].set_xlabel('Period (Quarter)', fontsize=11)
+axes[1].set_ylabel('QoQ Growth Rate (%)', fontsize=11)
+axes[1].grid(True, linestyle='--', alpha=0.6)
+axes[1].legend(title='Regional Council')
+
+plt.tight_layout()
+
+# Save high-resolution multi-panel figure
+plt.savefig('nz_regional_labour_macro_analysis.png', dpi=300)
+print("Master's portfolio visualization saved successfully as 'nz_regional_labour_macro_analysis.png'!")
+
+plt.show()
