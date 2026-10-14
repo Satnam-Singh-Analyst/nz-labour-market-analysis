@@ -86,7 +86,7 @@ pip install pandas numpy matplotlib seaborn
 Bash
 python "Labour Market Statistics.py"
 
-## Author:Satnam Singh
-## Master of Arts (Economics) Candidate — Massey University
-## GitHub: @Satnam-Singh-Analyst
-## LinkedIn: Satnam Singh
+Author:Satnam Singh
+Master of Arts (Economics) Candidate — Massey University
+GitHub: @Satnam-Singh-Analyst
+LinkedIn: Satnam Singh
