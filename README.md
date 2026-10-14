@@ -9,11 +9,12 @@ Developed as a cornerstone portfolio piece for Master of Arts in Economics studi
 
 ## Project Structure
 ```text
-├── hlfs-jun26qtr-csv.csv                 # Raw Stats NZ HLFS Dataset (1.27M+ records)
 ├── Labour Market Statistics.py           # Consolidated Master Python Econometric Script
-├── nz_regional_labour_macro_analysis.png # High-resolution multi-panel output chart
+├── .gitignore                            # Excludes raw large dataset (>100MB)
 └── README.md                             # Project documentation and economic brief
 ```
+
+*(Note: Raw data files are excluded from version control via `.gitignore` to comply with GitHub file size limits. See the setup instructions below to source the data locally).*
 
 ---
 
@@ -40,53 +41,51 @@ The analysis pipeline is structured into reproducible, modular phases:
 
 ---
 
-Visualisation Outputs
-The script generates a publication-ready multi-panel figure (nz_regional_labour_macro_analysis.png) featuring:
+## Visualisation Outputs
+The script generates a publication-ready **multi-panel figure** (`nz_regional_labour_macro_analysis.png`) featuring:
+* **Panel 1:** Absolute quarterly labour force trends across Auckland, Wellington, and Canterbury, illustrating massive macroeconomic weighting toward Auckland's scale.
+* **Panel 2:** Quarter-on-Quarter percentage growth trajectories, capturing regional business cycle fluctuations and public/private sector sensitivity.
 
-Panel 1: Absolute quarterly labour force trends across Auckland, Wellington, and Canterbury, illustrating massive macroeconomic weighting toward Auckland's scale.
+---
 
-Panel 2: Quarter-on-Quarter percentage growth trajectories, capturing regional business cycle fluctuations and public/private sector sensitivity.
+## Tech Stack
+* **Language:** Python 3.14+
+* **Data Manipulation & Analysis:** Pandas, NumPy
+* **Data Visualization:** Matplotlib, Seaborn
+* **IDE:** Visual Studio Code (VS Code)
 
-Tech Stack
-Language: Python 3.14+
+---
 
-Data Manipulation & Analysis: Pandas, NumPy
+## Dataset Download & Local Setup Guide
 
-Data Visualization: Matplotlib, Seaborn
+Due to GitHub's 100MB file size limit, the raw multi-gigabyte Stats NZ dataset is excluded from this repository via `.gitignore`. Follow these steps to replicate the environment:
 
-IDE: Visual Studio Code (VS Code)
+### **1. Download the Raw Dataset**
+* **Source:** Statistics New Zealand (Stats NZ)
+* **Direct Download Link:** [Stats NZ HLFS Quarterly Datasets](https://www.stats.govt.nz/large-datasets/csv-files-for-download/)
+* **Required File:** `hlfs-jun26qtr-csv.csv`
 
-Dataset Download & Local Setup Guide
-Due to GitHub's 100MB file size limit, the raw multi-gigabyte Stats NZ dataset is excluded from this repository via .gitignore. Follow these steps to replicate the environment:
+### **2. Execution Steps**
+1. Clone this repository and navigate into the folder:
+   ```bash
+   git clone https://github.com/Satnam-Singh-Analyst/nz-labour-market-analysis.git
+   cd nz-labour-market-analysis
+   ```
+2. Place your downloaded `hlfs-jun26qtr-csv.csv` file directly into the root project directory.
+3. Install required Python packages:
+   ```bash
+   pip install pandas numpy matplotlib seaborn
+   ```
+4. Execute the master economic analysis script:
+   ```bash
+   python "Labour Market Statistics.py"
+   ```
 
-1. Download the Raw Dataset
-Source: Statistics New Zealand (Stats NZ)
+---
 
-Direct Download Link: Stats NZ HLFS Quarterly Datasets
+## Author
 
-Required File: hlfs-jun26qtr-csv.csv
-
-2. Execution Steps
-Clone this repository and navigate into the folder:
-
-Bash
-git clone [https://github.com/Satnam-Singh-Analyst/nz-labour-market-analysis.git](https://github.com/Satnam-Singh-Analyst/nz-labour-market-analysis.git)
-cd nz-labour-market-analysis
-Place your downloaded hlfs-jun26qtr-csv.csv file directly into the root project directory.
-
-Install required Python packages:
-
-Bash
-pip install pandas numpy matplotlib seaborn
-Execute the master economic analysis script:
-
-Bash
-python "Labour Market Statistics.py"
-Author
-Satnam Singh
-
-Master of Arts (Economics) Candidate — Massey University
-
-GitHub: @Satnam-Singh-Analyst
-
-LinkedIn: Satnam Singh
+* **Satnam Singh**
+* Master of Arts (Economics) Candidate — Massey University
+* **GitHub:** [@Satnam-Singh-Analyst](https://github.com/Satnam-Singh-Analyst)
+* **LinkedIn:** [Satnam Singh](https://linkedin.com/in/satnam-singh-3b124a230)
